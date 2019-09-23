@@ -2,23 +2,52 @@ import React from 'react';
 import logo from './logo.svg';
 import './TaskList.css';
 
+class Item extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      shortDesc: this.props.shortDesc
+    }
+  }
+
+  render() {
+    return (
+      <li>{this.state.shortDesc}</li>
+    )
+  }
+}
+
+
+class List extends React.Component {
+  constructor(props) {
+    super(props);
+    let itemDescs = ['test1', 'test2', 'test3', 'test4'];
+    this.state = {
+      title: 'I am a list!',
+      items: itemDescs.map(function(desc, index) {
+        return <Item shortDesc={desc} />
+      })
+    };
+  }
+
+  render() {
+    return (
+      <React.Fragment>
+        <h1>{this.state.title}</h1>
+        <ul>
+          {this.state.items.map(function(item, index) {
+            return (<li key={index}>{item}</li>);
+          })}
+        </ul>
+      </React.Fragment>
+    );
+  }
+}
+
 function TaskList() {
   return (
     <div className="TaskList">
-      <header className="TaskList-header">
-        <img src={logo} className="TaskList-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="TaskList-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <List />
     </div>
   );
 }

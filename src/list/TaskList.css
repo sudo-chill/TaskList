@@ -2,8 +2,13 @@
   margin-left: 4vmin;
 }
 
-.TaskList-logo {
-  height: 40vmin;
+.TaskList ul {
+  padding-left: inherit;
+  width: 120px;
+}
+
+.TaskList .task-item {
+  list-style: none;
 }
 
 .TaskList-header {
@@ -15,8 +20,4 @@
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
-}
-
-.TaskList-link {
-  color: #09d3ac;
 }

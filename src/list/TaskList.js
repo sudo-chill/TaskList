@@ -1,5 +1,4 @@
 import React from 'react';
-import logo from './logo.svg';
 import './TaskList.css';
 
 class Item extends React.Component {

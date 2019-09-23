@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import TaskList from './TaskList';
+import TaskList from './list/TaskList';
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(<TaskList />, document.getElementById('root'));

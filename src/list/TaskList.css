@@ -3,8 +3,14 @@
 }
 
 .TaskList ul {
-  padding-left: inherit;
+  padding-left: 10px;
   width: 20%;
+  margin-top: 0px;
+}
+
+.TaskList h3 {
+  margin-top: 2px;
+  margin-bottom: 2px;
 }
 
 .TaskList .task-item {

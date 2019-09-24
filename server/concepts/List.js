@@ -1,17 +1,32 @@
+/**
+ * Server side representation of a list.
+ * TODO: see if there is a better way to represent the data so
+ * UI code doesn't have to reference fields with underscores. Then again,
+ * that *does* enforce a nice pattern of always knowing what content is from an API call
+ * vs locally defined...
+ */
 class List {
-    constructor() {
-        this._title = 'this is a list';
-        this._items = [];
-    }
-    set title(newTitle) {
-        this._title = newTitle;
-    }
-    get title() {
-        return this._title;
-    }
-    get items() {
-        return this._items;
-    }
+  constructor(options) {
+    this._title = options.title || 'I am a list!';
+    this._items = options.items || [];
+    this._id = options.id;
+  }
+
+  set title(newTitle) {
+    this._title = newTitle;
+  }
+
+  get title() {
+    return this._title;
+  }
+  
+  get items() {
+    return this._items;
+  }
+
+  get id() {
+    return this._id;
+  }
 }
 
 module.exports = List;

@@ -54,17 +54,16 @@ class Item extends React.Component {
   }
 }
 
-
 class List extends React.Component {
   constructor(props) {
     super(props);
-    let itemDescs = [{desc: 'test1', checked: true},
-                     {desc: 'test2', checked: false},
-                     {desc: 'test3', checked: false},
-                     {desc: 'test4', checked: true}];
+    let itemDescs = props.items || [{desc: 'test1', checked: true},
+                                    {desc: 'test2', checked: false},
+                                    {desc: 'test3', checked: false},
+                                    {desc: 'test4', checked: true}];
     this.state = {
       id: this.props.id,
-      title: 'I am a list!',
+      title: this.props.title,
       items: itemDescs.map((item, index) =>
         <Item key={index} id={this.props.id + '-' + index} shortDesc={item['desc']} checked={item['checked']} />
       )
@@ -73,22 +72,65 @@ class List extends React.Component {
 
   render() {
     return (
-      <React.Fragment>
+      <div>
         <h1>{this.state.title}</h1>
         <ul>
           {this.state.items}
         </ul>
-      </React.Fragment>
+      </div>
     );
   }
 }
 
-function TaskList() {
-  return (
-    <div className="TaskList">
-      <List id="1"/>
-    </div>
-  );
+class TaskList extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      error: null,
+      isLoaded: false,
+      lists: []
+    };
+  }
+
+  componentDidMount() {
+    fetch('api/lists/list')
+      .then(res => res.json())
+      .then(
+        (result) => {
+          let listObjects = result.lists.map((l, i) => {
+            console.log(l);
+            return <List key={i} id={i} title={l._title} items={l._items} />
+          });
+          const id = listObjects.length;
+          listObjects.push(<List key={id} id={id} title="default list" />);
+          this.setState({
+            isLoaded: true,
+            lists: listObjects
+          });
+        },
+        (error) => {
+          this.setState({
+            isLoaded: true,
+            error: error
+          });
+        }
+      );
+  }
+
+  render() {
+    const {error, isLoaded, lists} = this.state;
+    if(error) {
+      return <div>Error: {error.message}</div>
+    } else if(!isLoaded) {
+      return <div>Loading...</div>
+    } else {
+      return (
+        <div className="TaskList">
+          {this.state.lists}
+        </div>
+      );
+    }
+  }
 }
 
 export default TaskList;

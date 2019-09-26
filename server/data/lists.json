@@ -3,15 +3,15 @@
     "title": "I am a list from a file!",
     "id": 1,
     "items": [
-      {"desc": "I am an item", "checked": true},
-      {"desc": "I am an unfinished item", "checked": false}
+      {"shortDesc": "I am an item", "checked": true, "id": 1},
+      {"shortDesc": "I am an unfinished item", "checked": false, "id": 2}
     ]
   },
   {
     "title": "I am a second list from a file",
     "id": 2,
     "items": [
-      {"desc": "a simple item", "checked": false}
+      {"shortDesc": "a simple item", "checked": false, "id": 1}
     ]
   }
 ]

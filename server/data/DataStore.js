@@ -16,6 +16,10 @@ class DataStore {
   getAllLists() {
     throw new NotImplementedError();
   }
+
+  addItem(listId, itemData) {
+    throw new NotImplementedError();
+  }
 }
 
 module.exports = DataStore;

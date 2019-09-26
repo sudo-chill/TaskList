@@ -1,19 +1,10 @@
-const ERROR_CODE = 0;
+const ServerError = require('./ServerError')
 
-class NotImplementedError extends Error {
+const ERROR_CODE = 1;
+
+class NotImplementedError extends ServerError {
   constructor() {
-    super("Not Implemented Yet");
-    // https://stackoverflow.com/questions/31089801/extending-error-in-javascript-with-es6-syntax-babel
-    this.name = this.constructor.name;
-    if(typeof(Error.captureStackTrace) === 'function') {
-      Error.captureStackTrace(this, this.constructor);
-    } else {
-      this.stack = (new Error(message)).stack;
-    }
-  }
-
-  get errorCode() {
-    return ERROR_CODE;
+    super("Not Implemented Yet", ERROR_CODE);
   }
 }
 

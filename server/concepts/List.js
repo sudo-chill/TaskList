@@ -27,6 +27,13 @@ class List {
   get id() {
     return this._id;
   }
+
+  addItem(item) {
+    const newId = this._items.length;
+    item['id'] = newId;
+    this._items.push(item);
+    return newId;
+  }
 }
 
 module.exports = List;

@@ -1,6 +1,8 @@
 import React from 'react';
 import './TaskList.css';
-import List from './List'
+import List from './List';
+import '../common/Ajax';
+import Ajax from '../common/Ajax';
 
 /**
  * Controls the entire task list, which includes making nested lists.
@@ -9,7 +11,8 @@ class TaskList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      error: null,
+      error: false,
+      errorMessage: null,
       isLoaded: false,
       lists: []
     };
@@ -21,31 +24,38 @@ class TaskList extends React.Component {
    * TODO: partition lists by user.
    */
   componentDidMount() {
-    fetch('api/listing/list')
-      .then(res => res.json())
+    Ajax.fetchAjax('api/listing/list?asXhr=true')
       .then(
         (result) => {
           let listObjects = result.lists.map((l, i) => {
-            return <List key={i} id={i} title={l._title} items={l._items} />
+            return <List key={i} id={l._id} title={l._title} items={l._items} />
           });
           this.setState({
             isLoaded: true,
             lists: listObjects
           });
-        },
+        })
+      .catch(
         (error) => {
+          if(error.json) {
+            error = error.json;
+          }
           this.setState({
             isLoaded: true,
-            error: error
+            error: true,
+            errorMessage: error
           });
-        }
-      );
+        });
   }
 
   render() {
-    const {error, isLoaded} = this.state;
+    const {error, errorMessage, isLoaded} = this.state;
     if(error) {
-      return <div>Error: {error.message}</div>
+      if(errorMessage) {
+        return <div><h1>Error: {errorMessage}</h1></div>
+      } else {
+        return <div><h1>An unknown error occurred</h1></div>
+      }
     } else if(!isLoaded) {
       return <div>Loading...</div>
     } else {

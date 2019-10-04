@@ -1,6 +1,6 @@
 import React from 'react';
 import Item from './Item';
-import Ajax from '../common/Ajax';
+import { ajax } from '../common/Ajax';
 
 /**
  * This is a UI list, which is mostly to use a collection of Items.
@@ -25,7 +25,7 @@ class List extends React.Component {
       const fetchArgs = {method: 'POST',
                          body: JSON.stringify({id: this.state.id, item: newItemData}),
                          headers: {'Content-Type': 'application/json'}};
-      Ajax.fetchAjax('api/listing/create-item', fetchArgs)
+      ajax('api/listing/create-item', fetchArgs)
         .then((result) => {
           newItemData.id = result.newId;
           console.log(newItemData);

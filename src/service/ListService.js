@@ -1,5 +1,5 @@
-import Ajax from '../common/Ajax';
+import { ajax } from '../common/Ajax';
 
 export const getLists = async () => {
-  return Ajax.fetchAjax('api/listing/list?asXhr=true');
+  return ajax('api/listing/list?asXhr=true');
 };

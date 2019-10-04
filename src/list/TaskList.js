@@ -30,7 +30,6 @@ class TaskList extends React.Component {
     }
 
     if(error) {
-      console.error(error);
       this.setState({
         error: error,
         isLoaded: true

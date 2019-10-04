@@ -1,6 +1,3 @@
-//https://dev.to/jhotterbeekx/testing-asynchronous-lifecycle-methods-with-jest-13jo
-
-
 import React from 'react';
 import {shallow, mount} from 'enzyme';
 
@@ -39,31 +36,36 @@ describe('<TaskList />', () => {
   describe('loads lists', () => {
     it('and sets error to true if an error occurs', async () => {
       getLists.mockImplementation(() => {
-        return Promise.reject({error: new Error('blah')});
+        return Promise.reject({error: new Error('test error')});
       });
 
       const wrapper = mount(<TaskList />);
       await wrapper.instance().componentDidMount();
 
-      expect(wrapper.instance().state.isLoaded).toBe(true);
-      expect(wrapper.instance().state.lists.length).toEqual(0);
-      expect(wrapper.instance().state.error.message).toEqual('blah');
+      const state = wrapper.instance().state;
+      expect(state.isLoaded).toBe(true);
+      expect(state.lists.length).toEqual(0);
+      expect(state.error.message).toEqual('test error');
     });
 
     it('and renders lists after they load', async () => {
       getLists.mockImplementation(() => {
         const fakeData = {lists: [
-          {'_id': 1, '_title': 'test list', '_items': [{'shortDesc': 'something', 'checked': true}]}
+          {'_id': 1, '_title': 'test list', '_items': [{'shortDesc': 'something', 'checked': true}]},
+          {'_id': 2, '_title': 'test list 2', '_items': [{'shortDesc': 'something', 'checked': false}]}
         ]};
-        return new Promise((resolve, reject) => resolve(fakeData));
+        // We need to return a promise that can resolve to our test data so the componentDidMount method can call then on it.
+        return new Promise((resolve) => resolve(fakeData));
       });
 
       const wrapper = mount(<TaskList />);
       await wrapper.instance().componentDidMount();
-      wrapper.instance().forceUpdate();
 
-      expect(wrapper.instance().state.isLoaded).toBe(true);
-      expect(wrapper.instance().state.lists.length).toEqual(1)
+      const state = wrapper.instance().state;
+      expect(state.isLoaded).toBe(true);
+      expect(state.lists.length).toEqual(2);
+      expect(state.lists[0].props.title).toEqual('test list');
+      expect(state.lists[1].props.title).toEqual('test list 2');
     });
   });
 });

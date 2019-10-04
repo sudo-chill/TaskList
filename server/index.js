@@ -28,7 +28,6 @@ app.listen(3001, () => {
 app.get('/api/listing/list', (req, res) => {
   try {
     var lists = dataStore.getAllLists().map(listData => new List(listData));
-    console.log('list count: ', lists.length);
     res.json({lists: lists});
   } catch(e) {
     ErrorHelper.handleGlobalError(e, req, res);

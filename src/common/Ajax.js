@@ -3,7 +3,7 @@ var handleResponse = (response) => {
     if(response.ok) {
       return json;
     } else {
-      return Promise.reject({res: response, json: json});
+      return Promise.reject({res: response, error: json});
     }
   });
 }

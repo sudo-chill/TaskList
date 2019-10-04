@@ -1,8 +1,7 @@
 import React from 'react';
 import './TaskList.css';
 import List from './List';
-import '../common/Ajax';
-import Ajax from '../common/Ajax';
+import { getLists } from '../service/ListService';
 
 /**
  * Controls the entire task list, which includes making nested lists.
@@ -11,8 +10,7 @@ class TaskList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      error: false,
-      errorMessage: null,
+      error: null,
       isLoaded: false,
       lists: []
     };
@@ -23,48 +21,49 @@ class TaskList extends React.Component {
    * Here, we ask the server for all of the lists we can get. Currently, lists are global.
    * TODO: partition lists by user.
    */
-  componentDidMount() {
-    Ajax.fetchAjax('api/listing/list?asXhr=true')
-      .then(
-        (result) => {
-          let listObjects = result.lists.map((l, i) => {
-            return <List key={i} id={l._id} title={l._title} items={l._items} />
-          });
-          this.setState({
-            isLoaded: true,
-            lists: listObjects
-          });
-        })
-      .catch(
-        (error) => {
-          if(error.json) {
-            error = error.json;
-          }
-          this.setState({
-            isLoaded: true,
-            error: true,
-            errorMessage: error
-          });
+  async componentDidMount() {
+    var result, error;
+    try {
+      result = await getLists();
+    } catch(res) {
+      error = res.error;
+    }
+
+    if(error) {
+      console.error(error);
+      this.setState({
+        error: error,
+        isLoaded: true
+      });
+    } else {
+      if(result && result.lists) {
+        let listObjects = result.lists.map((list, i) => {
+          return <List key={i} id={list._id} title={list._title} items={list._items} />;
         });
+        this.setState({
+          isLoaded: true,
+          lists: listObjects
+        });
+      }
+    }
   }
 
   render() {
-    const {error, errorMessage, isLoaded} = this.state;
+    const {error, isLoaded} = this.state;
+    if(!isLoaded) return <div>Loading...</div>;
     if(error) {
-      if(errorMessage) {
-        return <div><h1>Error: {errorMessage}</h1></div>
+      if(error.error) {
+        return <div><h1>Error: {error.error}</h1></div>
       } else {
         return <div><h1>An unknown error occurred</h1></div>
       }
-    } else if(!isLoaded) {
-      return <div>Loading...</div>
-    } else {
-      return (
-        <div className="TaskList">
-          {this.state.lists}
-        </div>
-      );
     }
+
+    return (
+      <div className="TaskList">
+        {this.state.lists}
+      </div>
+    );
   }
 }
 

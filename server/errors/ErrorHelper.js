@@ -15,7 +15,7 @@ class ErrorHelper {
       }
 
       if(req.query['asXhr']) {
-        res.status(status).json({error: errRes});
+        res.status(status).json(errRes);
       } else {
         res.status(status).render('error', errRes);
       }

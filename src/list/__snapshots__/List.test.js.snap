@@ -1,31 +1,35 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<List /> render() renders empty when there are no items 1`] = `
-<div
-  id="list-1"
->
-  <h3>
+<Fragment>
+  <h3
+    className="list-title"
+  >
     a title
   </h3>
   <p>
     You have no items! You can add one below
   </p>
-  <form
-    onSubmit={[Function]}
+  <div
+    className="new-item"
   >
     <p>
       <input
-        onSubmit={[Function]}
+        className="new-item-desc"
+        onKeyDown={[Function]}
         placeholder="new item"
         type="text"
       />
+       
+      <span
+        className="new-item-submit"
+        onClick={[Function]}
+      >
+        +
+      </span>
     </p>
-    <input
-      type="submit"
-      value="Save"
-    />
-  </form>
-</div>
+  </div>
+</Fragment>
 `;
 
 exports[`<List /> render() renders items when they are present 1`] = `
@@ -42,57 +46,59 @@ exports[`<List /> render() renders items when they are present 1`] = `
   }
   title="a title"
 >
-  <div
-    id="list-1"
+  <h3
+    className="list-title"
   >
-    <h3>
-      a title
-    </h3>
-    <ul>
-      <Item
-        checked={true}
-        id="list-1-1"
-        key="0"
-        shortDesc="an item"
-      >
-        <li
-          className="task-item"
-          id="list-1-1"
-        >
-          <input
-            defaultChecked={true}
-            onClick={[Function]}
-            type="checkbox"
-          />
-          <span
-            className="short-desc"
-          >
-            an item
-          </span>
-           
-          <span
-            onClick={[Function]}
-          >
-            [...]
-          </span>
-        </li>
-      </Item>
-    </ul>
-    <form
-      onSubmit={[Function]}
+    a title
+  </h3>
+  <ul>
+    <Item
+      checked={true}
+      id="list-1-1"
+      key="0"
+      shortDesc="an item"
     >
-      <p>
+      <li
+        className="task-item"
+        id="list-1-1"
+      >
         <input
-          onSubmit={[Function]}
-          placeholder="new item"
-          type="text"
+          defaultChecked={true}
+          onClick={[Function]}
+          type="checkbox"
         />
-      </p>
+        <span
+          className="short-desc"
+        >
+          an item
+        </span>
+         
+        <span
+          onClick={[Function]}
+        >
+          [...]
+        </span>
+      </li>
+    </Item>
+  </ul>
+  <div
+    className="new-item"
+  >
+    <p>
       <input
-        type="submit"
-        value="Save"
+        className="new-item-desc"
+        onKeyDown={[Function]}
+        placeholder="new item"
+        type="text"
       />
-    </form>
+       
+      <span
+        className="new-item-submit"
+        onClick={[Function]}
+      >
+        +
+      </span>
+    </p>
   </div>
 </List>
 `;

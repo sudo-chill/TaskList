@@ -9,6 +9,14 @@ import { getLists } from '../service/ListService';
 // or after the import; this ordering seems to work for me so I'm not changing it.
 jest.mock('../service/ListService');
 
+// helper method
+const shallowComp = state => {
+  const wrapper = shallow(<TaskList />);
+  wrapper.setState(state);
+  wrapper.update();
+  return wrapper;
+};
+
 describe('<TaskList />', () => {
   describe('constructor()', () => {
     it('constructs the component with correct default state', () => {
@@ -41,7 +49,7 @@ describe('<TaskList />', () => {
    *   messes with async/await logic.
    */
   describe('componentDidMount()', () => {
-    it('and sets error to true if an error occurs', async () => {
+    it('sets error to true if an error occurs', async () => {
       getLists.mockImplementation(() => {
         return Promise.reject({error: new Error('test error')});
       });
@@ -55,7 +63,7 @@ describe('<TaskList />', () => {
       expect(state.error.message).toEqual('test error');
     });
 
-    it('and renders lists after they load', async () => {
+    it('renders lists after they load', async () => {
       getLists.mockImplementation(() => {
         const fakeData = {lists: [
           {'_id': 1, '_title': 'test list', '_items': [{'shortDesc': 'something', 'checked': true}]},
@@ -71,8 +79,30 @@ describe('<TaskList />', () => {
       const state = wrapper.instance().state;
       expect(state.isLoaded).toBe(true);
       expect(state.lists.length).toEqual(2);
-      expect(state.lists[0].props.title).toEqual('test list');
-      expect(state.lists[1].props.title).toEqual('test list 2');
+      expect(state.lists[0]._title).toEqual('test list');
+      expect(state.lists[1]._title).toEqual('test list 2');
+    });
+  });
+
+  describe('deleteList()', () => {
+    it('deletes the given list if the user confirms', () => {
+      window.confirm = jest.fn(() => true);
+      const lists = [{_id: 1, _title: "list title", _items: []}];
+      const wrapper = shallowComp({isLoaded: true, lists: lists});
+
+      wrapper.instance().deleteList(1);
+
+      expect(wrapper.instance().state.lists.length).toEqual(0);
+    });
+
+    it('does nothing if the user cancels', () => {
+      window.confirm = jest.fn(() => false);
+      const lists = [{_id: 1, _title: "list title", _items: []}];
+      const wrapper = shallowComp({isLoaded: true, lists: lists});
+
+      wrapper.instance().deleteList(1);
+
+      expect(wrapper.instance().state.lists.length).toEqual(1);
     });
   });
 
@@ -82,14 +112,6 @@ describe('<TaskList />', () => {
 
       expect(wrapper).toMatchSnapshot();
     });
-
-    // helper method
-    const shallowComp = state => {
-      const wrapper = shallow(<TaskList />);
-      wrapper.setState(state);
-      wrapper.update();
-      return wrapper;
-    };
 
     it('renders an error message when state.error has a value', () => {
       const wrapper = shallowComp({isLoaded: true, error: {error: 'test error'}});
@@ -110,7 +132,7 @@ describe('<TaskList />', () => {
     });
 
     it('renders List components for each present list', () => {
-      const lists = [<List key="1" id="1" title="list title" items={[]} />];
+      const lists = [{_id: 1, _title: "list title", _items: []}];
       const wrapper = shallowComp({isLoaded: true, lists: lists});
 
       expect(wrapper).toMatchSnapshot();

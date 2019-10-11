@@ -7,12 +7,24 @@ exports[`<TaskList /> render() renders List components for each present list 1`]
   <h1>
     Your Lists
   </h1>
-  <List
-    id="1"
-    items={Array []}
-    key="1"
-    title="list title"
-  />
+  <hr />
+  <div
+    className="list"
+    id="list-1"
+    key="0"
+  >
+    <p
+      className="delete-list"
+      onClick={[Function]}
+    >
+      X
+    </p>
+    <List
+      id={1}
+      items={Array []}
+      title="list title"
+    />
+  </div>
 </div>
 `;
 
@@ -23,6 +35,7 @@ exports[`<TaskList /> render() renders a canned error message when an error obje
   <h1>
     Your Lists
   </h1>
+  <hr />
   <h3>
     An unknown error occurred
   </h3>
@@ -36,6 +49,7 @@ exports[`<TaskList /> render() renders a simple message if there are no lists 1`
   <h1>
     Your Lists
   </h1>
+  <hr />
   <h3>
     No lists! You should create one somehow
   </h3>
@@ -49,6 +63,7 @@ exports[`<TaskList /> render() renders an error message when state.error has a v
   <h1>
     Your Lists
   </h1>
+  <hr />
   <h3>
     Error: 
     test error
@@ -63,6 +78,7 @@ exports[`<TaskList /> render() renders as loading for the initial state 1`] = `
   <h1>
     Your Lists
   </h1>
+  <hr />
   <p>
     Loading...
   </p>

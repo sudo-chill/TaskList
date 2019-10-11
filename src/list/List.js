@@ -13,14 +13,24 @@ class List extends React.Component {
     };
     this.createInput = React.createRef();
     this.newItemSubmit = this.newItemSubmit.bind(this);
+    this.onEnter = this.onEnter.bind(this);
   }
 
-  async newItemSubmit(e) {
-    e.preventDefault();
+  async onEnter(e) {
+    if(e.key === 'Enter') {
+      return this.newItemSubmit();
+    }
+  }
+
+  async newItemSubmit() {
     let newItemData = {checked: false};
-    const newItemInfo = this.createInput.current;
-    if(newItemInfo.value && newItemInfo.value !== '') {
-      newItemData.shortDesc = newItemInfo.value;
+    let newItemInfo = this.createInput.current.value;
+    if(!newItemInfo) {
+      newItemInfo = '';
+    }
+    newItemInfo = newItemInfo.trim();
+    if(newItemInfo !== '') {
+      newItemData.shortDesc = newItemInfo;
       const fetchArgs = {method: 'POST',
                          body: JSON.stringify({id: this.props.id, item: newItemData}),
                          headers: {'Content-Type': 'application/json'}};
@@ -30,9 +40,9 @@ class List extends React.Component {
           let items = this.state.items;
           items.push(newItemData);
           this.setState({items: items});
+          this.createInput.current.value = '';
         });
     }
-    return false;
   }
 
   newItemInputId() {
@@ -51,14 +61,17 @@ class List extends React.Component {
     }
 
     return (
-      <div id={`list-${this.props.id}`}>
-        <h3>{this.props.title}</h3>
+      <React.Fragment>
+        <h3 className="list-title">{this.props.title}</h3>
         {itemBody}
-        <form onSubmit={this.newItemSubmit}>
-          <p><input type="text" placeholder="new item" ref={this.createInput} onSubmit={(e) => this.newItemSubmit(e)} /></p>
-          <input type="submit" value="Save" />
-        </form>
-      </div>
+        <div className="new-item">
+          <p>
+            <input type="text" className="new-item-desc" placeholder="new item" ref={this.createInput} onKeyDown={this.onEnter} />
+            &nbsp;
+            <span className="new-item-submit" onClick={this.newItemSubmit}>+</span>
+          </p>
+        </div>
+      </React.Fragment>
     );
   }
 }

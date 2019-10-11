@@ -14,6 +14,7 @@ class TaskList extends React.Component {
       isLoaded: false,
       lists: []
     };
+    this.deleteList = this.deleteList.bind(this);
   }
 
   /**
@@ -36,14 +37,23 @@ class TaskList extends React.Component {
       });
     } else {
       if(result && result.lists) {
-        let listObjects = result.lists.map((list, i) => {
-          return <List key={i} id={list._id} title={list._title} items={list._items} />;
-        });
         this.setState({
           isLoaded: true,
-          lists: listObjects
+          lists: result.lists
         });
       }
+    }
+  }
+
+  async deleteList(id) {
+    if(window.confirm('Are you sure?')) {
+      // TODO: make call to server
+      const updatedLists = this.state.lists.filter((l) => {
+        return l._id !== id;
+      });
+      this.setState({
+        lists: updatedLists
+      });
     }
   }
 
@@ -61,12 +71,21 @@ class TaskList extends React.Component {
     } else if(this.state.lists.length === 0) {
       body = <h3>No lists! You should create one somehow</h3>
     } else {
-      body = this.state.lists;
+      let listObjects = this.state.lists.map((list, i) => {
+        return (
+          <div key={i} className="list" id={`list-${list._id}`}>
+            <p className="delete-list" onClick={() => {this.deleteList(list._id)}}>X</p>
+            <List id={list._id} title={list._title} items={list._items} />
+          </div>
+        );
+      });
+      body = listObjects;
     }
 
     return (
       <div className="TaskList">
         <h1>Your Lists</h1>
+        <hr />
         {body}
       </div>
     );

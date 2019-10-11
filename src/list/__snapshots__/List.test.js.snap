@@ -1,0 +1,98 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<List /> render() renders empty when there are no items 1`] = `
+<div
+  id="list-1"
+>
+  <h3>
+    a title
+  </h3>
+  <p>
+    You have no items! You can add one below
+  </p>
+  <form
+    onSubmit={[Function]}
+  >
+    <p>
+      <input
+        onSubmit={[Function]}
+        placeholder="new item"
+        type="text"
+      />
+    </p>
+    <input
+      type="submit"
+      value="Save"
+    />
+  </form>
+</div>
+`;
+
+exports[`<List /> render() renders items when they are present 1`] = `
+<List
+  id={1}
+  items={
+    Array [
+      Object {
+        "checked": true,
+        "id": 1,
+        "shortDesc": "an item",
+      },
+    ]
+  }
+  title="a title"
+>
+  <div
+    id="list-1"
+  >
+    <h3>
+      a title
+    </h3>
+    <ul>
+      <Item
+        checked={true}
+        id="list-1-1"
+        key="0"
+        shortDesc="an item"
+      >
+        <li
+          className="task-item"
+          id="list-1-1"
+        >
+          <input
+            defaultChecked={true}
+            onClick={[Function]}
+            type="checkbox"
+          />
+          <span
+            className="short-desc"
+          >
+            an item
+          </span>
+           
+          <span
+            onClick={[Function]}
+          >
+            [...]
+          </span>
+        </li>
+      </Item>
+    </ul>
+    <form
+      onSubmit={[Function]}
+    >
+      <p>
+        <input
+          onSubmit={[Function]}
+          placeholder="new item"
+          type="text"
+        />
+      </p>
+      <input
+        type="submit"
+        value="Save"
+      />
+    </form>
+  </div>
+</List>
+`;

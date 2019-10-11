@@ -9,8 +9,6 @@ class List extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      id: this.props.id,
-      title: this.props.title,
       items: this.props.items || [],
     };
     this.createInput = React.createRef();
@@ -24,7 +22,7 @@ class List extends React.Component {
     if(newItemInfo.value && newItemInfo.value !== '') {
       newItemData.shortDesc = newItemInfo.value;
       const fetchArgs = {method: 'POST',
-                         body: JSON.stringify({id: this.state.id, item: newItemData}),
+                         body: JSON.stringify({id: this.props.id, item: newItemData}),
                          headers: {'Content-Type': 'application/json'}};
       createItem(fetchArgs)
         .then((result) => {
@@ -38,24 +36,28 @@ class List extends React.Component {
   }
 
   newItemInputId() {
-    return `list-${this.state.id}-newItemInput`;
+    return `list-${this.props.id}-newItemInput`;
   }
 
   render() {
-    var transformedItems = this.state.items.map((item, index) => {
-      return <Item key={index} id={`list-${this.state.id}-${item.id}`} shortDesc={item.shortDesc} checked={item.checked} />
-    });
-    return (
-      <div id={`list-${this.state.id}`}>
-        <h3>{this.state.title}</h3>
-        <ul>
-          {transformedItems}
+    let itemBody;
+    if(this.state.items.length === 0) {
+      itemBody = <p>You have no items! You can add one below</p>
+    } else {
+      var transformedItems = this.state.items.map((item, index) => {
+        return <Item key={index} id={`list-${this.props.id}-${item.id}`} shortDesc={item.shortDesc} checked={item.checked} />
+      });
+      itemBody = <ul>{transformedItems}</ul>
+    }
 
-          <form onSubmit={this.newItemSubmit}>
-            <li><input type="text" placeholder="new item" ref={this.createInput} onSubmit={(e) => this.newItemSubmit(e)}/></li>
-            <input type="submit" value="Save" />
-          </form>
-        </ul>
+    return (
+      <div id={`list-${this.props.id}`}>
+        <h3>{this.props.title}</h3>
+        {itemBody}
+        <form onSubmit={this.newItemSubmit}>
+          <p><input type="text" placeholder="new item" ref={this.createInput} onSubmit={(e) => this.newItemSubmit(e)} /></p>
+          <input type="submit" value="Save" />
+        </form>
       </div>
     );
   }

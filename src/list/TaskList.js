@@ -59,7 +59,7 @@ class TaskList extends React.Component {
       }
     }
 
-    if(this.state.lists.length == 0) {
+    if(this.state.lists.length === 0) {
       return (
         <h1>No lists! You should create one somehow</h1>
       );

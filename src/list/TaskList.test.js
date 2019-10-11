@@ -2,6 +2,7 @@ import React from 'react';
 import {shallow, mount} from 'enzyme';
 
 import TaskList from '../list/TaskList';
+import List from '../list/List';
 import { getLists } from '../service/ListService';
 
 // this will automatically mock everything in the file being used as the first arg. Online posts make it unclear if this is supposed to be set before
@@ -9,9 +10,15 @@ import { getLists } from '../service/ListService';
 jest.mock('../service/ListService');
 
 describe('<TaskList />', () => {
-  it('renders as loading when rendered without mounting', () => {
-    const wrapper = shallow(<TaskList />);
-    expect(wrapper).toMatchSnapshot();
+  describe('constructor()', () => {
+    it('constructs the component with correct default state', () => {
+      const wrapper = shallow(<TaskList />);
+
+      const state = wrapper.instance().state;
+      expect(state.isLoaded).toBe(false);
+      expect(state.lists.length).toEqual(0);
+      expect(state.error).toBe(null);
+    });
   });
 
   /*
@@ -33,7 +40,7 @@ describe('<TaskList />', () => {
    * - notice that each test is NOT using the done() callback; I suspect that including that changes how the test runner handles the test, and it
    *   messes with async/await logic.
    */
-  describe('loads lists', () => {
+  describe('componentDidMount()', () => {
     it('and sets error to true if an error occurs', async () => {
       getLists.mockImplementation(() => {
         return Promise.reject({error: new Error('test error')});
@@ -66,6 +73,47 @@ describe('<TaskList />', () => {
       expect(state.lists.length).toEqual(2);
       expect(state.lists[0].props.title).toEqual('test list');
       expect(state.lists[1].props.title).toEqual('test list 2');
+    });
+  });
+
+  describe('render()', () => {
+    it('renders as loading for the initial state', () => {
+      const wrapper = shallow(<TaskList />);
+
+      expect(wrapper).toMatchSnapshot();
+    });
+
+    // helper method
+    const shallowComp = state => {
+      const wrapper = shallow(<TaskList />);
+      wrapper.setState(state);
+      wrapper.update();
+      return wrapper;
+    };
+
+    it('renders an error message when state.error has a value', () => {
+      const wrapper = shallowComp({isLoaded: true, error: {error: 'test error'}});
+
+      expect(wrapper).toMatchSnapshot();
+    });
+
+    it('renders a canned error message when an error object is set but without a messsage', () => {
+      const wrapper = shallowComp({isLoaded: true, error: {}});
+
+      expect(wrapper).toMatchSnapshot();
+    });
+
+    it('renders a simple message if there are no lists', () => {
+      const wrapper = shallowComp({isLoaded: true, lists: []});
+
+      expect(wrapper).toMatchSnapshot();
+    });
+
+    it('renders List components for each present list', () => {
+      const lists = [<List key="1" id="1" title="list title" items={[]} />];
+      const wrapper = shallowComp({isLoaded: true, lists: lists});
+
+      expect(wrapper).toMatchSnapshot();
     });
   });
 });

@@ -50,12 +50,19 @@ class TaskList extends React.Component {
   render() {
     const {error, isLoaded} = this.state;
     if(!isLoaded) return <div>Loading...</div>;
+
     if(error) {
       if(error.error) {
         return <div><h1>Error: {error.error}</h1></div>
       } else {
         return <div><h1>An unknown error occurred</h1></div>
       }
+    }
+
+    if(this.state.lists.length == 0) {
+      return (
+        <h1>No lists! You should create one somehow</h1>
+      );
     }
 
     return (

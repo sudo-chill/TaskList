@@ -2,7 +2,6 @@ import React from 'react';
 import {shallow, mount} from 'enzyme';
 
 import List from '../list/List';
-import Item from './Item';
 import { createItem } from '../service/ListService';
 
 jest.mock('../service/ListService');

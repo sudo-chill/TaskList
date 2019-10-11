@@ -13,35 +13,30 @@ class Item extends React.Component {
       checked: this.props.checked,
       editing: false
     }
+    this.descInput = React.createRef();
     this.handleClick = this.handleClick.bind(this);
     this.toggleEdit = this.toggleEdit.bind(this);
   }
 
   handleClick() {
     this.setState(state => ({
-      shortDesc: state.shortDesc,
       checked: !this.state.checked
     }));
   }
-  
-  toggleEdit(elemId) {
+
+  toggleEdit() {
     let newState = {};
-    newState['checked'] = this.state.checked;
     if(this.state.editing) {
-      let _item = document.getElementById(elemId);
-      let input = _item.getElementsByTagName('input')[1]; //[0] is the checkbox
-      newState['shortDesc'] = input.value;
-    } else {
-      newState['shortDesc'] = this.state.shortDesc;
+      newState['shortDesc'] = this.descInput.current.value;
     }
     newState['editing'] = !this.state.editing;
     this.setState(newState);
   }
-  
+
   render() {
     let display;
     if(this.state.editing) {
-      display = <input type="text" defaultValue={this.state.shortDesc} />
+      display = <input ref={this.descInput} type="text" defaultValue={this.state.shortDesc} />
     } else {
       display = <span className="short-desc">{this.state.shortDesc}</span>
     }
@@ -50,7 +45,7 @@ class Item extends React.Component {
         <input type="checkbox" defaultChecked={this.state.checked} onClick={this.handleClick}/>
         {display}
         &nbsp;
-        <span onClick={(e) => this.toggleEdit(this.state.id)}>[...]</span>
+        <span onClick={this.toggleEdit}>[...]</span>
       </li>
     )
   }

@@ -1,0 +1,54 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Item /> render() renders an input when editing 1`] = `
+<Item
+  checked={true}
+  id="1-1"
+  shortDesc="a desc"
+>
+  <li
+    className="task-item"
+    id="1-1"
+  >
+    <input
+      defaultChecked={true}
+      onClick={[Function]}
+      type="checkbox"
+    />
+    <input
+      defaultValue="a desc"
+      type="text"
+    />
+     
+    <span
+      onClick={[Function]}
+    >
+      [...]
+    </span>
+  </li>
+</Item>
+`;
+
+exports[`<Item /> render() renders default state as expected 1`] = `
+<li
+  className="task-item"
+  id="1-1"
+>
+  <input
+    defaultChecked={true}
+    onClick={[Function]}
+    type="checkbox"
+  />
+  <span
+    className="short-desc"
+  >
+    a desc
+  </span>
+   
+  <span
+    onClick={[Function]}
+  >
+    [...]
+  </span>
+</li>
+`;

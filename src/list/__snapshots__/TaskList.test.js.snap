@@ -4,6 +4,9 @@ exports[`<TaskList /> render() renders List components for each present list 1`]
 <div
   className="TaskList"
 >
+  <h1>
+    Your Lists
+  </h1>
   <List
     id="1"
     items={Array []}
@@ -14,30 +17,54 @@ exports[`<TaskList /> render() renders List components for each present list 1`]
 `;
 
 exports[`<TaskList /> render() renders a canned error message when an error object is set but without a messsage 1`] = `
-<div>
+<div
+  className="TaskList"
+>
   <h1>
-    An unknown error occurred
+    Your Lists
   </h1>
+  <h3>
+    An unknown error occurred
+  </h3>
 </div>
 `;
 
 exports[`<TaskList /> render() renders a simple message if there are no lists 1`] = `
-<h1>
-  No lists! You should create one somehow
-</h1>
+<div
+  className="TaskList"
+>
+  <h1>
+    Your Lists
+  </h1>
+  <h3>
+    No lists! You should create one somehow
+  </h3>
+</div>
 `;
 
 exports[`<TaskList /> render() renders an error message when state.error has a value 1`] = `
-<div>
+<div
+  className="TaskList"
+>
   <h1>
+    Your Lists
+  </h1>
+  <h3>
     Error: 
     test error
-  </h1>
+  </h3>
 </div>
 `;
 
 exports[`<TaskList /> render() renders as loading for the initial state 1`] = `
-<div>
-  Loading...
+<div
+  className="TaskList"
+>
+  <h1>
+    Your Lists
+  </h1>
+  <p>
+    Loading...
+  </p>
 </div>
 `;

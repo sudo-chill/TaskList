@@ -8,9 +8,8 @@ class Item extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      id: this.props.id,
       shortDesc: this.props.shortDesc,
-      checked: this.props.checked,
+      checked: this.props.checked || false,
       editing: false
     }
     this.descInput = React.createRef();
@@ -25,11 +24,10 @@ class Item extends React.Component {
   }
 
   toggleEdit() {
-    let newState = {};
+    let newState = {'editing': !this.state.editing};
     if(this.state.editing) {
       newState['shortDesc'] = this.descInput.current.value;
     }
-    newState['editing'] = !this.state.editing;
     this.setState(newState);
   }
 
@@ -41,8 +39,8 @@ class Item extends React.Component {
       display = <span className="short-desc">{this.state.shortDesc}</span>
     }
     return (
-      <li className="task-item" id={this.state.id}>
-        <input type="checkbox" defaultChecked={this.state.checked} onClick={this.handleClick}/>
+      <li className="task-item" id={this.props.id}>
+        <input type="checkbox" defaultChecked={this.state.checked} onClick={this.handleClick} />
         {display}
         &nbsp;
         <span onClick={this.toggleEdit}>[...]</span>

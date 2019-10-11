@@ -7,11 +7,17 @@ describe('<Item />', () => {
   describe('constructor()', () => {
     it('correctly sets initial state', () => {
       const wrapper = shallow(<Item id="1-1" shortDesc="a desc" checked={true} />);
+
       const state = wrapper.instance().state;
-      expect(state.id).toEqual('1-1');
       expect(state.shortDesc).toEqual('a desc');
       expect(state.checked).toBe(true);
       expect(state.editing).toBe(false);
+    });
+
+    it('defaults checked to false if not provided', () => {
+      const wrapper = shallow(<Item id="1-1" shortDesc="a desc" />);
+
+      expect(wrapper.instance().state.checked).toBe(false);
     });
   });
 
@@ -19,6 +25,7 @@ describe('<Item />', () => {
     it('changes checkbox state', () => {
       const wrapper = shallow(<Item id="1-1" shortDesc="a desc" checked={false} />);
       wrapper.instance().handleClick();
+
       expect(wrapper.instance().state.checked).toBe(true);
     });
   });

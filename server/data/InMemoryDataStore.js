@@ -25,6 +25,10 @@ class InMemoryDataStore extends IDataStore {
     data = null;
   }
 
+  getListCount() {
+    return data.length;
+  }
+
   // TODO: this is a terrible way to get the right thing. We need an object to act as a map
   // instead.
   getList(id) {
@@ -55,6 +59,14 @@ class InMemoryDataStore extends IDataStore {
     itemData['id'] = newId;
     // TODO: validate item data
     list.items.push(itemData);
+    return newId;
+  }
+
+  createList(listData) {
+    var allLists = this.getAllLists();
+    let newId = 1 + this.getListCount();
+    listData['id'] = newId;
+    data.push(listData);
     return newId;
   }
 

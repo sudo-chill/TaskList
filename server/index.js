@@ -35,18 +35,18 @@ app.get('/api/listing/list', (req, res) => {
   }
 });
 
-/*app.post('/api/listing/create', (req, res) => {
+app.post('/api/listing/create', (req, res) => {
   try {
     let title = req.body['title'];
     DataValidator.validateValueDefined(title, 'List title');
     title = title.trim();
     DataValidator.validateListTitle(title);
-    let newList = dataStore.createList(title);
-    res.json({list: newList});
+    let newId = dataStore.createList(title);
+    res.json({listId: newId});
   } catch(e) {
     ErrorHelper.handleGlobalError(e, req, res);
   }
-});*/
+});
 
 app.put('/api/listing/create-item', (req, res) => {
   try {

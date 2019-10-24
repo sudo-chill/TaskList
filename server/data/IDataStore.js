@@ -24,6 +24,10 @@ class DataStore {
   deleteList(listId) {
     throw new NotImplementedError();
   }
+
+  createList(listData) {
+    throw new NotImplementedError();
+  }
 }
 
 module.exports = DataStore;

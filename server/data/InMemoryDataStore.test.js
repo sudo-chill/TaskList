@@ -64,6 +64,26 @@ describe('InMemoryDataStore', () => {
     });
   });
 
+  describe('createList()', () => {
+    it('creates the first list with an id of 1', () => {
+      let dataStore = new InMemoryDataStore([]);
+      expect(dataStore.getListCount()).to.equal(0);
+      const newId = dataStore.createList({title: 'something'});
+      expect(dataStore.getListCount()).to.equal(1);
+      expect(newId).to.equal(1);
+      expect(dataStore.getList(newId).title).to.equal('something');
+    });
+
+    it('creates more lists with an incrementing id', () => {
+      let dataStore = new InMemoryDataStore([list1, list2]);
+      expect(dataStore.getListCount()).to.equal(2);
+      const newId = dataStore.createList({title: 'list 3'});
+      expect(dataStore.getListCount()).to.equal(3);
+      expect(newId).to.equal(3);
+      expect(dataStore.getList(newId).title).to.equal('list 3')
+    })
+  });
+
   describe('deleteList()', () => {
     it('throws a ListNotFoundError if the list does not exist', () => {
       expect(() => {
@@ -75,10 +95,10 @@ describe('InMemoryDataStore', () => {
 
     it('removes the specified list from storage', () => {
       let dataStore = new InMemoryDataStore([list1, list2]);
-      expect(dataStore.getAllLists().length).to.equal(2);
+      expect(dataStore.getListCount()).to.equal(2);
 
       dataStore.deleteList(1);
-      expect(dataStore.getAllLists().length).to.equal(1);
+      expect(dataStore.getListCount()).to.equal(1);
       expect(dataStore.getList(1)).to.be.null;
     });
   });

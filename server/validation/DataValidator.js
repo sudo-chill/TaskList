@@ -14,34 +14,32 @@ class DataValidator {
 
   static validateValueDefined(val, name) {
     if(!val) {
-      let bad = {};
-      bad[name] = ' was not provided';
-      throw new InvalidInputError(bad);
+      this.throwInvalidInputError(name, 'was not provided');
     }
   }
 
   static validateLengthMoreThan(measurable, minLength, name) {
     if(measurable.length && measurable.length < minLength) {
-      let bad = {};
-      bad[name] = ' must be longer than ' + minLength;
-      throw new InvalidInputError(bad);
+      this.throwInvalidInputError(name, 'must be longer than ' + minLength);
     }
   }
 
   static validateLengthLessThan(measurable, maxLength, name) {
-    if(measurable.length && measurable.length < maxLength) {
-      let bad = {};
-      bad[name] = ' can be no longer than ' + maxLength;
-      throw new InvalidInputError(bad);
+    if(measurable.length && measurable.length > maxLength) {
+      this.throwInvalidInputError(name, 'can be no longer than ' + maxLength);
     }
   }
 
   static validateValueNumeric(val, name) {
     if(val.search(/^\d+$/) !== 0) {
-      let bad = {};
-      bad[name] = ' must be numeric'
-      throw new InvalidInputError(bad);
+      this.throwInvalidInputError(name, 'must be numeric');
     }
+  }
+
+  static throwInvalidInputError(name, message) {
+    let bad = {};
+    bad[name] = message;
+    throw new InvalidInputError(bad);
   }
 }
 

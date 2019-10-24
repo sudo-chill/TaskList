@@ -1,12 +1,12 @@
 const fs = require('fs');
 const path = require('path');
-const DataStore = require('./DataStore');
+const IDataStore = require('./IDataStore');
 const ListNotFoundError = require('../errors/ListNotFoundError');
 
 const DATA_FILE = './lists.json';
 let data = null;
 
-class FileDataStore extends DataStore {
+class FileDataStore extends IDataStore {
   constructor() {
     super();
     if(data == null) {

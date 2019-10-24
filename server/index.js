@@ -8,6 +8,7 @@ const app = express();
 const ErrorHelper = require('./errors/ErrorHelper');
 const List = require('./concepts/List');
 const FileDataStore = require('./data/FileDatastore');
+const DataValidator = require('./validation/DataValidator');
 
 app.use(bodyParser.json());
 app.use(pino);
@@ -34,11 +35,37 @@ app.get('/api/listing/list', (req, res) => {
   }
 });
 
-app.post('/api/listing/create-item', (req, res) => {
+/*app.post('/api/listing/create', (req, res) => {
+  try {
+    let title = req.body['title'];
+    DataValidator.validateValueDefined(title, 'List title');
+    title = title.trim();
+    DataValidator.validateListTitle(title);
+    let newList = dataStore.createList(title);
+    res.json({list: newList});
+  } catch(e) {
+    ErrorHelper.handleGlobalError(e, req, res);
+  }
+});*/
+
+app.put('/api/listing/create-item', (req, res) => {
   try {
     let newId = dataStore.addItem(req.body['id'] - 1, req.body['item']);
     res.json({newId: newId});
   } catch(e) {
     ErrorHelper.handleGlobalError(e, req, res);
   }
-})
+});
+
+app.delete('/api/listing/delete-list/:id', (req, res) => {
+  let id = req.params['id'];
+  if(!id) { id = '' };
+  id = id.trim();
+  try {
+    DataValidator.validateListId(id);
+    dataStore.deleteList(parseInt(id));
+    res.json({});
+  } catch(e) {
+    ErrorHelper.handleGlobalError(e, req, res);
+  }
+});

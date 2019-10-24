@@ -10,17 +10,20 @@ class FileDataStore extends DataStore {
   constructor() {
     super();
     if(data == null) {
-      console.log('reading file');
       var filepath = path.resolve(__dirname, DATA_FILE);
       data = JSON.parse(fs.readFileSync(filepath));
     }
   }
 
+  // TODO: this is a terrible way to get the right thing. We need an object to act as a map
+  // instead.
   getList(id) {
     if(id < 0 || id > data.length) {
       return null;
     }
-    return data[id];
+    return data.filter((list) => {
+      return list.id == id;
+    });
   }
 
   getAllLists() {
@@ -36,6 +39,17 @@ class FileDataStore extends DataStore {
     itemData['id'] = newId;
     list.items.push(itemData);
     return newId;
+  }
+
+  // TODO: similar to getList, this is a very inefficient way to delete
+  // an element.
+  deleteList(listId) {
+    if(!this.getList(listId)) {
+      throw new ListNotFoundError(listId);
+    }
+    data = data.filter((list) => {
+      return list.id != listId;
+    });
   }
 }
 

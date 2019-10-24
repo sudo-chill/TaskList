@@ -1,6 +1,6 @@
 const ClientError = require('./ClientError');
 
-const ERROR_CODE = 101;
+const ERROR_CODE = 102;
 
 class ListNotExistError extends ClientError {
   constructor(listId) {

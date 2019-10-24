@@ -1,7 +1,7 @@
 import React from 'react';
 import './TaskList.css';
 import List from './List';
-import { getLists } from '../service/ListService';
+import { getLists, deleteListById } from '../service/ListService';
 
 /**
  * Controls the entire task list, which includes making nested lists.
@@ -45,15 +45,33 @@ class TaskList extends React.Component {
     }
   }
 
+  clearError() {
+    this.setState({error: null});
+  }
+
   async deleteList(id) {
     if(window.confirm('Are you sure?')) {
-      // TODO: make call to server
-      const updatedLists = this.state.lists.filter((l) => {
-        return l._id !== id;
-      });
-      this.setState({
-        lists: updatedLists
-      });
+      this.clearError();
+      var error;
+      try {
+        await deleteListById(id);
+      } catch(res) {
+        error = res.error ? res.error : res;
+      }
+
+      if(error) {
+        this.setState({
+          error: error
+        });
+      } else {
+        const updatedLists = this.state.lists.filter((l) => {
+          return l._id !== id;
+        });
+
+        this.setState({
+          lists: updatedLists
+        });
+      }
     }
   }
 

@@ -17,6 +17,11 @@ const shallowComp = state => {
   return wrapper;
 };
 
+afterEach(() => {
+  // not clear why, but the mockImplementation may not clear by default if we don't do this, which leads to test side effects.
+  jest.resetAllMocks();
+});
+
 describe('<TaskList />', () => {
   describe('constructor()', () => {
     it('constructs the component with correct default state', () => {
@@ -47,6 +52,9 @@ describe('<TaskList />', () => {
    *   seems to make things work.
    * - notice that each test is NOT using the done() callback; I suspect that including that changes how the test runner handles the test, and it
    *   messes with async/await logic.
+   * - above here is a call after each test to reset all mocks. During testing other functionality, I found mocked behavior here was somehow getting
+   *   reused in other tests which messeed up my assertions. I personally think jest should do this by default, but whatever; make sure to reset all
+   *   mocks after each test to avoid side effects.
    */
   describe('componentDidMount()', () => {
     it('sets error to true if an error occurs', async () => {
@@ -69,7 +77,7 @@ describe('<TaskList />', () => {
           {'_id': 1, '_title': 'test list', '_items': [{'shortDesc': 'something', 'checked': true}]},
           {'_id': 2, '_title': 'test list 2', '_items': [{'shortDesc': 'something', 'checked': false}]}
         ]};
-        // We need to return a promise that can resolve to our test data so the componentDidMount method can call then on it.
+        // We need to return a promise that can resolve to our test data so the componentDidMount method can call then() on it.
         return new Promise((resolve) => resolve(fakeData));
       });
 
@@ -85,22 +93,22 @@ describe('<TaskList />', () => {
   });
 
   describe('deleteList()', () => {
-    it('deletes the given list if the user confirms', () => {
+    it('deletes the given list if the user confirms', async () => {
       window.confirm = jest.fn(() => true);
       const lists = [{_id: 1, _title: "list title", _items: []}];
       const wrapper = shallowComp({isLoaded: true, lists: lists});
 
-      wrapper.instance().deleteList(1);
+      await wrapper.instance().deleteList(1);
 
       expect(wrapper.instance().state.lists.length).toEqual(0);
     });
 
-    it('does nothing if the user cancels', () => {
+    it('does nothing if the user cancels', async () => {
       window.confirm = jest.fn(() => false);
       const lists = [{_id: 1, _title: "list title", _items: []}];
       const wrapper = shallowComp({isLoaded: true, lists: lists});
 
-      wrapper.instance().deleteList(1);
+      await wrapper.instance().deleteList(1);
 
       expect(wrapper.instance().state.lists.length).toEqual(1);
     });

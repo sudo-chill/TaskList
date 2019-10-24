@@ -7,7 +7,7 @@ const app = express();
 // local stuff
 const ErrorHelper = require('./errors/ErrorHelper');
 const List = require('./concepts/List');
-const FileDataStore = require('./data/FileDatastore');
+const InMemoryDataStore = require('./data/InMemoryDataStore');
 const DataValidator = require('./validation/DataValidator');
 
 app.use(bodyParser.json());
@@ -20,7 +20,7 @@ let dataStore;
 
 app.listen(3001, () => {
   // load data from 'database' (a file) once on app startup
-  dataStore = new FileDataStore();
+  dataStore = new InMemoryDataStore();
   console.log('Express server running on 3001');
 });
 

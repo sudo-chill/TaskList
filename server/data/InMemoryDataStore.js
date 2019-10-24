@@ -7,7 +7,7 @@ const DuplicateListIdError = require('../errors/DuplicateListIdError');
 const DATA_FILE = './lists.json';
 let data = null;
 
-class FileDataStore extends IDataStore {
+class InMemoryDataStore extends IDataStore {
   constructor(inputData) {
     super();
     if(data == null) {
@@ -70,4 +70,4 @@ class FileDataStore extends IDataStore {
   }
 }
 
-module.exports = FileDataStore;
+module.exports = InMemoryDataStore;

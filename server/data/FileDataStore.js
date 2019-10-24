@@ -2,17 +2,27 @@ const fs = require('fs');
 const path = require('path');
 const IDataStore = require('./IDataStore');
 const ListNotFoundError = require('../errors/ListNotFoundError');
+const DuplicateListIdError = require('../errors/DuplicateListIdError');
 
 const DATA_FILE = './lists.json';
 let data = null;
 
 class FileDataStore extends IDataStore {
-  constructor() {
+  constructor(inputData) {
     super();
     if(data == null) {
-      var filepath = path.resolve(__dirname, DATA_FILE);
-      data = JSON.parse(fs.readFileSync(filepath));
+      if(inputData) {
+        data = inputData;
+      } else {
+        var filepath = path.resolve(__dirname, DATA_FILE);
+        data = JSON.parse(fs.readFileSync(filepath));
+      }
     }
+  }
+
+  // used so we don't retain data between test runs
+  static reset() {
+    data = null;
   }
 
   // TODO: this is a terrible way to get the right thing. We need an object to act as a map
@@ -21,9 +31,15 @@ class FileDataStore extends IDataStore {
     if(id < 0 || id > data.length) {
       return null;
     }
-    return data.filter((list) => {
+    let matches = data.filter((list) => {
       return list.id == id;
     });
+    if(matches.length === 0) {
+      return null;
+    } else if(matches.length > 1) {
+      throw new DuplicateListIdError(id, matches.length);
+    }
+    return matches[0];
   }
 
   getAllLists() {
@@ -31,12 +47,13 @@ class FileDataStore extends IDataStore {
   }
 
   addItem(listId, itemData) {
-    var list = data[listId];
+    var list = this.getList(listId);
     if(!list) {
       throw new ListNotFoundError(listId);
     }
     const newId = list.items.length + 1;
     itemData['id'] = newId;
+    // TODO: validate item data
     list.items.push(itemData);
     return newId;
   }

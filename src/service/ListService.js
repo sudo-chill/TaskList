@@ -5,13 +5,23 @@ export const getLists = async () => {
 };
 
 export const createItem = async (data) => {
-  const args = {data: data, method: 'PUT'};
+  let args = {method: 'PUT'};
+  let body = JSON.stringify(data);
+  args.body = body;
+  let headers = {'Content-Type': 'application/json',
+                 'Content-Length': Buffer.byteLength(body)};
+  args.headers = headers;
   return ajax('api/listing/create-item?asXhr=true', args);
 }
 
-export const createNewList = async (data) => {
-  const args = {data: data, method: 'PUT'};
-  return ajax('api/listing/create', args);
+export const createNewList = async (title) => {
+  let args = {method: 'PUT'};
+  let body = JSON.stringify({title: title});
+  args.body = body;
+  let headers = {'Content-Type': 'application/json',
+                 'Content-Length': Buffer.byteLength(body)};
+  args.headers = headers;
+  return ajax('api/listing/create?asXhr=true', args);
 }
 
 export const deleteListById = async (id) => {

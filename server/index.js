@@ -35,7 +35,7 @@ app.get('/api/listing/list', (req, res) => {
   }
 });
 
-app.post('/api/listing/create', (req, res) => {
+app.put('/api/listing/create', (req, res) => {
   try {
     let title = req.body['title'];
     DataValidator.validateValueDefined(title, 'List title');
@@ -50,7 +50,7 @@ app.post('/api/listing/create', (req, res) => {
 
 app.put('/api/listing/create-item', (req, res) => {
   try {
-    let newId = dataStore.addItem(req.body['id'] - 1, req.body['item']);
+    let newId = dataStore.addItem(req.body['id'], req.body['item']);
     res.json({newId: newId});
   } catch(e) {
     ErrorHelper.handleGlobalError(e, req, res);

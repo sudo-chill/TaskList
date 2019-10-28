@@ -23,22 +23,19 @@ class List extends React.Component {
   }
 
   async newItemSubmit() {
-    let newItemData = {checked: false};
+    let newItemData = {id: this.props.id, item: {checked: false}};
     let newItemInfo = this.createInput.current.value;
     if(!newItemInfo) {
       newItemInfo = '';
     }
     newItemInfo = newItemInfo.trim();
     if(newItemInfo !== '') {
-      newItemData.shortDesc = newItemInfo;
-      const fetchArgs = {method: 'POST',
-                         body: JSON.stringify({id: this.props.id, item: newItemData}),
-                         headers: {'Content-Type': 'application/json'}};
-      createItem(fetchArgs)
+      newItemData.item.shortDesc = newItemInfo;
+      createItem(newItemData)
         .then((result) => {
-          newItemData.id = result.newId;
+          newItemData.item.id = result.newId;
           let items = this.state.items;
-          items.push(newItemData);
+          items.push(newItemData.item);
           this.setState({items: items});
           this.createInput.current.value = '';
         });

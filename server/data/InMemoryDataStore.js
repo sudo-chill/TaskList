@@ -62,10 +62,9 @@ class InMemoryDataStore extends IDataStore {
     return newId;
   }
 
-  createList(listData) {
-    var allLists = this.getAllLists();
+  createList(title) {
     let newId = 1 + this.getListCount();
-    listData['id'] = newId;
+    let listData = {id: newId, title: title};
     data.push(listData);
     return newId;
   }

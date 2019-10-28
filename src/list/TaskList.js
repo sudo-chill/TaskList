@@ -1,7 +1,7 @@
 import React from 'react';
 import './TaskList.css';
 import List from './List';
-import { getLists, deleteListById } from '../service/ListService';
+import { getLists, deleteListById, createNewList } from '../service/ListService';
 
 /**
  * Controls the entire task list, which includes making nested lists.
@@ -14,7 +14,9 @@ class TaskList extends React.Component {
       isLoaded: false,
       lists: []
     };
+    this.newList = React.createRef();
     this.deleteList = this.deleteList.bind(this);
+    this.createList = this.createList.bind(this);
   }
 
   /**
@@ -47,6 +49,29 @@ class TaskList extends React.Component {
 
   clearError() {
     this.setState({error: null});
+  }
+
+  async createList() {
+    let newListData = {};
+    let newListTitle = this.newList.current.value;
+    if(!newListTitle) {
+      newListTitle = '';
+    }
+    newListTitle = newListTitle.trim();
+    if(newListTitle !== '') {
+      newListData.title = newListTitle;
+      const fetchArgs = {method: 'POST',
+                         body: JSON.stringify(newListData),
+                         headers: {'Content-Type': 'application/json'}};
+        createNewList(fetchArgs)
+          .then((result) => {
+            newListData.id = result.listId;
+            let lists = this.state.lists;
+            lists.push(newListData);
+            this.setState({lists: lists});
+            this.newList.current.value = '';
+          });
+    }
   }
 
   async deleteList(id) {

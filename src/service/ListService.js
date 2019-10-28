@@ -9,6 +9,11 @@ export const createItem = async (data) => {
   return ajax('api/listing/create-item?asXhr=true', args);
 }
 
+export const createNewList = async (data) => {
+  const args = {data: data, method: 'PUT'};
+  return ajax('api/listing/create', args);
+}
+
 export const deleteListById = async (id) => {
   const args = {method: 'DELETE'};
   const url = `api/listing/delete-list/${id}?xhr=true`;

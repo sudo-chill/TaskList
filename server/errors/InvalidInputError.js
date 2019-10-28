@@ -10,6 +10,10 @@ class InvalidInputError extends ClientError {
   }
 
   get invalidInput() { return this._invalidInput };
+
+  asObject() {
+    return super.asObject({invalidInput: this.invalidInput});
+  }
 }
 
 module.exports = InvalidInputError;

@@ -8,7 +8,7 @@ class ErrorHelper {
       var errRes = {error: err.message};
       var status = 500;
       if(err instanceof(ParentError)) {
-        errRes.errorCode = err.errorCode;
+        errRes = err.asObject(errRes);
         if(err.isClientError()) {
           status = 400;
         }

@@ -12,6 +12,29 @@
   max-width: 20em;
 }
 
+.TaskList .newList {
+  display: inline-block;
+  text-align: center;
+  width: 15em;
+  padding: 0;
+}
+
+.TaskList .newList input {
+  margin-left: auto;
+  margin-right: auto;
+  width: 10em;
+  margin-top: 6pt;
+  font-weight: bold;
+  font-size: 13pt;
+}
+
+.TaskList .newList .addList {
+  font-size: 58pt;
+  margin-top: 0em;
+  margin-bottom: 0em;
+  cursor: pointer;
+}
+
 .TaskList .list .delete-list {
   color: red;
   float: right;

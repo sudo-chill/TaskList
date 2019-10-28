@@ -3,7 +3,7 @@ import {shallow, mount} from 'enzyme';
 
 import TaskList from '../list/TaskList';
 import List from '../list/List';
-import { getLists } from '../service/ListService';
+import { getLists, createNewList } from '../service/ListService';
 
 // this will automatically mock everything in the file being used as the first arg. Online posts make it unclear if this is supposed to be set before
 // or after the import; this ordering seems to work for me so I'm not changing it.
@@ -89,6 +89,30 @@ describe('<TaskList />', () => {
       expect(state.lists.length).toEqual(2);
       expect(state.lists[0]._title).toEqual('test list');
       expect(state.lists[1]._title).toEqual('test list 2');
+    });
+  });
+
+  describe('createList()', () => {
+    it('does nothing if the list title is blank', async () => {
+      const wrapper = mount(<TaskList />, {attachTo: document.getElementById('root')})
+      expect(wrapper.instance().state.lists.length).toEqual(0);
+      await wrapper.instance().createList();
+      expect(wrapper.instance().state.lists.length).toEqual(0);
+    });
+
+    it('creates a new list when a title is given', async () => {
+      const title = 'new list';
+      createNewList.mockImplementation(() => {
+        const fakeList = {id: 1, title: title};
+        return new Promise((resolve) => resolve(fakeList));
+      });
+      const wrapper = mount(<TaskList />, {attachTo: document.getElementById('root')});
+      wrapper.instance().newList.current.value = title;
+      await wrapper.instance().createList();
+
+      const state = wrapper.instance().state;
+      expect(state.lists.length).toEqual(1);
+      expect(state.lists[0].title).toEqual(title);
     });
   });
 

@@ -52,20 +52,15 @@ class TaskList extends React.Component {
   }
 
   async createList() {
-    let newListData = {};
     let newListTitle = this.newList.current.value;
     if(!newListTitle) {
       newListTitle = '';
     }
     newListTitle = newListTitle.trim();
     if(newListTitle !== '') {
-      newListData.title = newListTitle;
-      const fetchArgs = {method: 'POST',
-                         body: JSON.stringify(newListData),
-                         headers: {'Content-Type': 'application/json'}};
-        createNewList(fetchArgs)
+        createNewList(newListTitle)
           .then((result) => {
-            newListData.id = result.listId;
+            let newListData = {id: result.listId, title: newListTitle};
             let lists = this.state.lists;
             lists.push(newListData);
             this.setState({lists: lists});
@@ -125,11 +120,19 @@ class TaskList extends React.Component {
       body = listObjects;
     }
 
+    const newList = (
+      <div className="newList list" id="new-list">
+        <input ref={this.newList} type="text" placeholder="new list title" />
+        <p className="addList" onClick={this.createList}>+</p>
+      </div>
+    );
+
     return (
       <div className="TaskList">
         <h1>Your Lists</h1>
         <hr />
         {body}
+        {newList}
       </div>
     );
   }

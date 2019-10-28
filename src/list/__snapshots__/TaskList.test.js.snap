@@ -25,6 +25,21 @@ exports[`<TaskList /> render() renders List components for each present list 1`]
       title="list title"
     />
   </div>
+  <div
+    className="newList list"
+    id="new-list"
+  >
+    <input
+      placeholder="new list title"
+      type="text"
+    />
+    <p
+      className="addList"
+      onClick={[Function]}
+    >
+      +
+    </p>
+  </div>
 </div>
 `;
 
@@ -39,6 +54,21 @@ exports[`<TaskList /> render() renders a canned error message when an error obje
   <h3>
     An unknown error occurred
   </h3>
+  <div
+    className="newList list"
+    id="new-list"
+  >
+    <input
+      placeholder="new list title"
+      type="text"
+    />
+    <p
+      className="addList"
+      onClick={[Function]}
+    >
+      +
+    </p>
+  </div>
 </div>
 `;
 
@@ -53,6 +83,21 @@ exports[`<TaskList /> render() renders a simple message if there are no lists 1`
   <h3>
     No lists! You should create one somehow
   </h3>
+  <div
+    className="newList list"
+    id="new-list"
+  >
+    <input
+      placeholder="new list title"
+      type="text"
+    />
+    <p
+      className="addList"
+      onClick={[Function]}
+    >
+      +
+    </p>
+  </div>
 </div>
 `;
 
@@ -68,6 +113,21 @@ exports[`<TaskList /> render() renders an error message when state.error has a v
     Error: 
     test error
   </h3>
+  <div
+    className="newList list"
+    id="new-list"
+  >
+    <input
+      placeholder="new list title"
+      type="text"
+    />
+    <p
+      className="addList"
+      onClick={[Function]}
+    >
+      +
+    </p>
+  </div>
 </div>
 `;
 
@@ -82,5 +142,20 @@ exports[`<TaskList /> render() renders as loading for the initial state 1`] = `
   <p>
     Loading...
   </p>
+  <div
+    className="newList list"
+    id="new-list"
+  >
+    <input
+      placeholder="new list title"
+      type="text"
+    />
+    <p
+      className="addList"
+      onClick={[Function]}
+    >
+      +
+    </p>
+  </div>
 </div>
 `;

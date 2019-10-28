@@ -107,7 +107,7 @@ class TaskList extends React.Component {
         body = <h3>An unknown error occurred</h3>
       }
     } else if(this.state.lists.length === 0) {
-      body = <h3>No lists! You should create one somehow</h3>
+      body = <h3>No lists! You should create one.</h3>
     } else {
       let listObjects = this.state.lists.map((list, i) => {
         return (
